@@ -1,0 +1,21 @@
+name: Daily Electricity Report
+
+on:
+  schedule:
+    - cron: '0 9 * * 1-5'  # 日本時間の18:00、月〜金
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - run: npm install
+      - run: npm start
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
